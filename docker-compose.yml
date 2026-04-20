@@ -1,0 +1,229 @@
+services:
+  iam-db:
+    image: postgres:16-alpine
+    container_name: iam-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${POSTGRES_KEYCLOAK_PASSWORD:-keycloak_password}
+    volumes:
+      - pgdata-iam:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  iam-app:
+    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION:-26.0}
+    container_name: iam-app
+    command: start-dev --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://iam-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${POSTGRES_KEYCLOAK_PASSWORD:-keycloak_password}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HOSTNAME: iam.sandbox.ac.kr
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ./keycloak/import.json:/opt/keycloak/data/import/realm.json:ro
+    depends_on:
+      iam-db:
+        condition: service_healthy
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000; printf 'GET /health/ready HTTP/1.0\\r\\nhost: localhost\\r\\nconnection: close\\r\\n\\r\\n' >&3; cat <&3 | grep -q '\"status\": \"UP\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  otest-app:
+    build: ./claim-inspector
+    container_name: otest-app
+    environment:
+      FLASK_SECRET_KEY: ${CLAIM_INSPECTOR_FLASK_SECRET:-dev-flask-secret-change-me}
+      OIDC_ISSUER: http://iam.sandbox.ac.kr/realms/sandbox
+      OIDC_CLIENT_ID: claim-inspector
+      OIDC_CLIENT_SECRET: ${CLAIM_INSPECTOR_SECRET:-claim-inspector-dev-secret-change-me}
+      OIDC_REDIRECT_URI: http://otest.sandbox.ac.kr/callback
+      OIDC_SCOPES: "openid profile email oidc-kafe-profile"
+    depends_on:
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  stest-app:
+    build: ./saml-inspector
+    container_name: stest-app
+    environment:
+      FLASK_SECRET_KEY: ${SAML_INSPECTOR_FLASK_SECRET:-dev-flask-secret-change-me-saml}
+      IDP_METADATA_URL: http://iam.sandbox.ac.kr/realms/sandbox/protocol/saml/descriptor
+      SP_ENTITY_ID: http://stest.sandbox.ac.kr/metadata
+      SP_BASE_URL: http://stest.sandbox.ac.kr
+    depends_on:
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/static:/usr/share/nginx/html:ro
+    depends_on:
+      - iam-app
+      - otest-app
+      - stest-app
+      - swiki-app
+    networks:
+      app-net:
+        aliases:
+          - iam.sandbox.ac.kr
+          - otest.sandbox.ac.kr
+          - owiki.sandbox.ac.kr
+          - stest.sandbox.ac.kr
+          - swiki.sandbox.ac.kr
+
+  # ─── wiki (Outline) ─────────────────────────────────────────────
+  owiki-db:
+    image: postgres:16-alpine
+    container_name: owiki-db
+    environment:
+      POSTGRES_DB: outline
+      POSTGRES_USER: outline
+      POSTGRES_PASSWORD: ${POSTGRES_OUTLINE_PASSWORD:-outline_password}
+    volumes:
+      - pgdata-owiki:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U outline -d outline"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  owiki-redis:
+    image: redis:7-alpine
+    container_name: owiki-redis
+    # Redis image declares VOLUME /data — use tmpfs so `docker compose down`
+    # leaves no anonymous volume behind (sandbox data is ephemeral anyway).
+    tmpfs:
+      - /data
+    networks:
+      - app-net
+
+  owiki-app:
+    image: outlinewiki/outline:${OUTLINE_VERSION:-latest}
+    container_name: owiki-app
+    environment:
+      NODE_ENV: production
+      SECRET_KEY: ${OUTLINE_SECRET_KEY:-ccb7a7928761a70efce6a9faf5976d6971c1f5fc88cdf675b41462bd164e90db}
+      UTILS_SECRET: ${OUTLINE_UTILS_SECRET:-46849b317bd836c343737b3d6a60507cc17e4e6c93e737ac6557cea10692ee40}
+      URL: http://owiki.sandbox.ac.kr
+      PORT: "3000"
+      DATABASE_URL: postgres://outline:${POSTGRES_OUTLINE_PASSWORD:-outline_password}@owiki-db:5432/outline
+      PGSSLMODE: disable
+      REDIS_URL: redis://owiki-redis:6379
+      OIDC_CLIENT_ID: outline
+      OIDC_CLIENT_SECRET: ${OUTLINE_OIDC_SECRET:-outline-dev-secret-change-me}
+      OIDC_AUTH_URI: http://iam.sandbox.ac.kr/realms/sandbox/protocol/openid-connect/auth
+      OIDC_TOKEN_URI: http://iam.sandbox.ac.kr/realms/sandbox/protocol/openid-connect/token
+      OIDC_USERINFO_URI: http://iam.sandbox.ac.kr/realms/sandbox/protocol/openid-connect/userinfo
+      OIDC_LOGOUT_URI: http://iam.sandbox.ac.kr/realms/sandbox/protocol/openid-connect/logout
+      OIDC_USERNAME_CLAIM: preferred_username
+      OIDC_DISPLAY_NAME: "Sandbox SSO"
+      OIDC_SCOPES: "openid profile email"
+      FORCE_HTTPS: "false"
+      FILE_STORAGE: local
+      FILE_STORAGE_LOCAL_ROOT_DIR: /var/lib/outline/data
+    volumes:
+      - owiki-data:/var/lib/outline/data
+    depends_on:
+      owiki-db:
+        condition: service_healthy
+      owiki-redis:
+        condition: service_started
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  # ─── swiki (MediaWiki + SimpleSAMLphp SP) ───────────────────────
+  swiki-app:
+    build: ./swiki
+    container_name: swiki-app
+    environment:
+      MW_DB_TYPE: sqlite
+    volumes:
+      - swiki-data:/var/www/html/data
+    depends_on:
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  # ─── profile: tools ─────────────────────────────────────────────
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    profiles: ["tools"]
+    ports:
+      - "127.0.0.1:8088:8080"
+    networks:
+      - app-net
+
+  # ─── profile: screenshots (Playwright-driven capture) ───────────
+  screenshots:
+    build: ./screenshots
+    container_name: screenshots
+    profiles: ["screenshots"]
+    volumes:
+      - ./docs/screenshots:/out
+    depends_on:
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  # ─── profile: tests ─────────────────────────────────────────────
+  test-runner:
+    build: ./tests
+    container_name: test-runner
+    profiles: ["tests"]
+    environment:
+      IDP_ISSUER: http://iam.sandbox.ac.kr/realms/sandbox
+      CLAIM_INSPECTOR_URL: http://otest.sandbox.ac.kr
+      STEST_URL: http://stest.sandbox.ac.kr
+      CLAIM_INSPECTOR_SECRET: ${CLAIM_INSPECTOR_SECRET:-claim-inspector-dev-secret-change-me}
+      RP_CLI_SECRET: ${RP_CLI_SECRET:-rp-cli-dev-secret-change-me}
+    depends_on:
+      iam-app:
+        condition: service_healthy
+    networks:
+      - app-net
+
+volumes:
+  pgdata-iam:
+  pgdata-owiki:
+  owiki-data:
+  swiki-data:
+
+networks:
+  app-net:
+    driver: bridge

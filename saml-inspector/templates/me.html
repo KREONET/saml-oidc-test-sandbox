@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}assertion — SAML inspector{% endblock %}
+{% block body %}
+<h1>Assertion inspector</h1>
+
+<h2>Issuer</h2>
+<p><code>{{ issuer or '—' }}</code></p>
+
+<h2>NameID</h2>
+<table>
+    <tr><th>Format</th><td><code>{{ name_id.get('format') or '—' }}</code></td></tr>
+    <tr><th>Value</th><td><code>{{ name_id.get('text') or '—' }}</code></td></tr>
+    <tr><th>SP Name Qualifier</th><td><code>{{ name_id.get('sp_name_qualifier') or '—' }}</code></td></tr>
+    <tr><th>Name Qualifier</th><td><code>{{ name_id.get('name_qualifier') or '—' }}</code></td></tr>
+</table>
+
+<h2>Authn Context</h2>
+<table>
+    <tr><th>AuthnContextClassRef</th><td><code>{{ authn_context_class_ref or '—' }}</code></td></tr>
+    <tr><th>SessionIndex</th><td><code>{{ session_index or '—' }}</code></td></tr>
+</table>
+
+<h2>Attribute Statement ({{ ava|length }} attribute{{ 's' if ava|length != 1 else '' }})</h2>
+<table>
+    <tr>
+        <th>Attribute Name</th>
+        <th>Type</th>
+        <th>Value(s)</th>
+    </tr>
+    {% for name, values in ava.items()|sort %}
+    <tr>
+        <td><code>{{ name }}</code></td>
+        <td>{{ 'array' if values|length > 1 else 'single' }}</td>
+        <td>
+            {% if values|length == 1 %}
+                <code>{{ values[0] }}</code>
+            {% else %}
+                <code>{{ values | tojson }}</code>
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3" class="muted">no attributes released</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Raw Assertion XML</h2>
+<pre>{{ assertion_xml }}</pre>
+{% endblock %}

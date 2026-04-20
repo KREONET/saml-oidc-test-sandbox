@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<SPConfig xmlns="urn:mace:shibboleth:3.0:native:sp:config"
+          xmlns:conf="urn:mace:shibboleth:3.0:native:sp:config"
+          clockSkew="180">
+
+    <!-- Sandbox SP identity. -->
+    <ApplicationDefaults entityID="http://swiki.sandbox.ac.kr/shibboleth"
+                         REMOTE_USER="uid eduPersonPrincipalName"
+                         cipherSuites="DEFAULT:!EXP:!LOW:!aNULL:!eNULL:!DES:!IDEA:!SEED:!RC4:!3DES:!kRSA:!SSLv2:!SSLv3:!TLSv1:!TLSv1.1"
+                         signing="false"
+                         encryption="false">
+
+        <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
+                  checkAddress="false" handlerSSL="false"
+                  cookieProps="http" redirectLimit="exact">
+
+            <!-- Default SSO target: the sandbox Keycloak realm. -->
+            <SSO entityID="http://iam.sandbox.ac.kr/realms/sandbox"
+                 discoveryProtocol="SAMLDS"
+                 discoveryURL="https://ds.example.org/DS/WAYF">
+                SAML2
+            </SSO>
+
+            <Logout>SAML2 Local</Logout>
+
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1 172.18.0.0/16"/>
+            <Handler type="Session" Location="/Session" showAttributeValues="true"/>
+            <Handler type="DiscoveryFeed" Location="/DiscoFeed"/>
+        </Sessions>
+
+        <Errors supportContact="sandbox@sandbox.ac.kr"
+                helpLocation="/about.html"
+                styleSheet="/shibboleth-sp/main.css"/>
+
+        <!-- Pull Keycloak's SAML descriptor dynamically via nginx (port
+             80). Fetching from iam-app:8080 directly would produce an
+             entityID with the ":8080" port embedded (Keycloak derives
+             entityID from the request host:port), which would no longer
+             match the SSO target below. `validate=false` since the
+             sandbox IdP publishes unsigned metadata. -->
+        <MetadataProvider type="XML"
+                          validate="false"
+                          url="http://iam.sandbox.ac.kr/realms/sandbox/protocol/saml/descriptor"
+                          backingFilePath="idp-metadata.xml"
+                          maxRefreshDelay="3600"/>
+
+        <AttributeExtractor type="XML" validate="true" reloadChanges="false"
+                            path="attribute-map.xml"/>
+
+        <AttributeResolver type="Query" subjectMatch="true"/>
+
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
+        <!-- SP signing keypair committed under shib-keys/. Dev-only. -->
+        <CredentialResolver type="File"
+                            key="sp-key.pem"
+                            certificate="sp-cert.pem"/>
+    </ApplicationDefaults>
+
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+</SPConfig>

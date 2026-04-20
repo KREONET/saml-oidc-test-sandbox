@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}stest.sandbox.ac.kr — SAML Test Sandbox{% endblock %}
+{% block body %}
+<h1>stest.sandbox.ac.kr</h1>
+<p>SAML 2.0 assertion inspector — Keycloak(sandbox realm)의 AuthnResponse를 파싱해 NameID · AttributeStatement · AuthnContext를 한 화면에 표시합니다.</p>
+
+<table>
+    <tr><th>SP Entity ID</th><td><code>{{ entity_id }}</code></td></tr>
+    <tr><th>SP Metadata</th><td><a href="/metadata" target="_blank">/metadata</a></td></tr>
+    <tr><th>IdP Metadata</th><td><a href="{{ idp_metadata_url }}" target="_blank">{{ idp_metadata_url }}</a></td></tr>
+</table>
+
+{% if user %}
+    <p>로그인됨: <strong>{{ user.get('uid', [''])[0] or user.get('eduPersonPrincipalName', [''])[0] }}</strong></p>
+    <p><a class="btn" href="/me">assertion 보기 →</a></p>
+{% else %}
+    <p><a class="btn" href="/login">SAML SSO 로그인 시작</a></p>
+    <h2>시드 계정</h2>
+    <table>
+        <tr><th>id</th><th>pw</th><th>역할</th></tr>
+        <tr><td>alice</td>  <td>Sandbox!Alice</td>  <td>student</td></tr>
+        <tr><td>bob</td>    <td>Sandbox!Bob</td>    <td>staff</td></tr>
+        <tr><td>carol</td>  <td>Sandbox!Carol</td>  <td>faculty</td></tr>
+        <tr><td>vguest</td> <td>Sandbox!Vguest</td> <td>VHO affiliate</td></tr>
+    </table>
+{% endif %}
+
+<h2>이 앱이 보여주는 것</h2>
+<ul>
+    <li><strong>SAML ↔ OIDC 속성 paring</strong> — <code>otest.sandbox.ac.kr</code>의 UserInfo와 동일 이름의 속성이 어설션으로 전달되는지 비교</li>
+    <li><strong>NameID 검사</strong> — Format / text / NameQualifier</li>
+    <li><strong>AttributeStatement 검증</strong> — camelCase eduPerson · SCHAC 이름 그대로</li>
+    <li>JSON 덤프는 <a href="/me.json">/me.json</a>, 원본 XML은 <code>/me</code> 하단에서 확인 가능</li>
+</ul>
+
+<div class="hint">
+    <strong>개발 전용 SP 인증서</strong> — <code>saml-inspector/keys/</code> 의 키페어는 레포에 커밋된 테스트용.
+    본 샌드박스 외부로 복제하거나 프로덕션에 재사용하지 마세요.
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}claims — {{ userinfo.get('preferred_username', 'user') }}{% endblock %}
+{% block body %}
+<h1>Claim inspector</h1>
+<p>
+    <span class="tag protocol">노란색 = 프로토콜 claim</span>
+    <span class="tag user-claim">파란색 = 사용자 attribute</span>
+    <span class="tag hit">초록색 = 해당 토큰에 존재</span>
+</p>
+
+<h2>Distribution table</h2>
+<table>
+    <tr>
+        <th>Claim</th>
+        <th>in ID token</th>
+        <th>in UserInfo</th>
+        <th>in Access token</th>
+        <th>UserInfo value</th>
+    </tr>
+    {% for r in rows %}
+    <tr class="{{ 'protocol' if r.is_protocol else 'user-claim' }}">
+        <td><code>{{ r.name }}</code></td>
+        <td class="{{ 'hit' if r.in_id else '' }}">{% if r.in_id %}<span class="yes">✓</span>{% else %}<span class="no">✗</span>{% endif %}</td>
+        <td class="{{ 'hit' if r.in_userinfo else '' }}">{% if r.in_userinfo %}<span class="yes">✓</span>{% else %}<span class="no">✗</span>{% endif %}</td>
+        <td class="{{ 'hit' if r.in_access else '' }}">{% if r.in_access %}<span class="yes">✓</span>{% else %}<span class="no">✗</span>{% endif %}</td>
+        <td>{% if r.in_userinfo %}<code>{{ r.userinfo_value | tojson }}</code>{% else %}<span class="muted">—</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Raw ID token payload</h2>
+<pre>{{ id_claims | tojson(indent=2) }}</pre>
+
+<h2>Raw UserInfo</h2>
+<pre>{{ userinfo | tojson(indent=2) }}</pre>
+
+<h2>Raw Access token payload</h2>
+<pre>{{ at_claims | tojson(indent=2) }}</pre>
+{% endblock %}

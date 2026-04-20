@@ -1,0 +1,1466 @@
+{
+  "id": "sandbox",
+  "realm": "sandbox",
+  "displayName": "Sandbox University (IdP)",
+  "displayNameHtml": "<b>Sandbox University</b> \u2014 OIDC Test Sandbox",
+  "enabled": true,
+  "defaultLocale": "en",
+  "internationalizationEnabled": true,
+  "supportedLocales": [
+    "en",
+    "ko"
+  ],
+  "loginTheme": "keycloak",
+  "accountTheme": "keycloak.v3",
+  "adminTheme": "keycloak.v2",
+  "emailTheme": "keycloak",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "rememberMe": true,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": false,
+  "permanentLockout": false,
+  "accessTokenLifespan": 300,
+  "accessTokenLifespanForImplicitFlow": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "offlineSessionIdleTimeout": 2592000,
+  "refreshTokenMaxReuse": 0,
+  "revokeRefreshToken": true,
+  "clientScopes": [
+    {
+      "name": "oidc-kafe-profile",
+      "description": "KAFE-compatible claim bundle (eduPerson + SCHAC + org). Emits camelCase claim names, userinfo-only (not in ID token).",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Release your institutional identity attributes (eduPerson, SCHAC) to this application."
+      },
+      "protocolMappers": [
+        {
+          "name": "eduPersonPrincipalName",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonPrincipalName",
+            "claim.name": "eduPersonPrincipalName",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "eduPersonUniqueId",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonUniqueId",
+            "claim.name": "eduPersonUniqueId",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "eduPersonAffiliation",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonAffiliation",
+            "claim.name": "eduPersonAffiliation",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonScopedAffiliation",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonScopedAffiliation",
+            "claim.name": "eduPersonScopedAffiliation",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonEntitlement",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonEntitlement",
+            "claim.name": "eduPersonEntitlement",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonOrcid",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "eduPersonOrcid",
+            "claim.name": "eduPersonOrcid",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "schacHomeOrganization",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "schacHomeOrganization",
+            "claim.name": "schacHomeOrganization",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "schacHomeOrganizationType",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "schacHomeOrganizationType",
+            "claim.name": "schacHomeOrganizationType",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "schacPersonalUniqueCode",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "schacPersonalUniqueCode",
+            "claim.name": "schacPersonalUniqueCode",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "o",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "o",
+            "claim.name": "o",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "ou",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "ou",
+            "claim.name": "ou",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "isMemberOf",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "isMemberOf",
+            "claim.name": "isMemberOf",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "uid-as-preferred-username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "uid",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "displayName-as-name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "displayName",
+            "claim.name": "name",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false"
+          }
+        }
+      ]
+    },
+    {
+      "id": "e54b1bb5-cc3a-4527-82b9-03c02ac3188c",
+      "name": "saml_organization",
+      "description": "Organization Membership",
+      "protocol": "saml",
+      "attributes": {
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "f6da35fc-16f7-4f32-b89f-46599743c599",
+          "name": "organization",
+          "protocol": "saml",
+          "protocolMapper": "saml-organization-membership-mapper",
+          "consentRequired": false,
+          "config": {}
+        }
+      ]
+    },
+    {
+      "id": "110f77b3-d0cf-4efa-b8ed-89e30fe476c4",
+      "name": "basic",
+      "description": "OpenID Connect scope for add all basic claims to the token",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "45e5e28a-0f0b-4821-9b6d-52b5db5aedee",
+          "name": "auth_time",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "AUTH_TIME",
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "auth_time",
+            "jsonType.label": "long"
+          }
+        },
+        {
+          "id": "a3931bb4-9659-4f59-bd22-b2045aeedd9c",
+          "name": "sub",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-sub-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9cc43456-3eb6-4e99-8d01-0c38069fbbec",
+      "name": "microprofile-jwt",
+      "description": "Microprofile - JWT built-in scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "111b6cf3-8ed5-4bc2-b0c4-639766b59a87",
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "groups",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "8906fe63-1db4-45bf-a8bd-725f357616bb",
+          "name": "upn",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "upn",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9d5fd6c1-5e6e-49ee-9caf-8af15684b218",
+      "name": "profile",
+      "description": "OpenID Connect built-in scope: profile",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "${profileScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "0675f72b-49a9-4092-bc82-fed5cee6e880",
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "id": "56414f1d-4ad5-49ae-92da-57090c5867de",
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "d7e123c5-7ef5-48ec-965a-d88af093b05e",
+          "name": "profile",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "profile",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "profile",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "8cb30709-6570-4390-a901-e2f59054aecc",
+          "name": "middle name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "middleName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "middle_name",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "19cab8e3-0836-4cd0-9282-f1f171b5b178",
+          "name": "zoneinfo",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "zoneinfo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "zoneinfo",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "3d96eadb-b918-4439-b608-9a5d63f5dac1",
+          "name": "website",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "website",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "website",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "b29eb21c-d641-4fcb-a92b-2bd30a90c942",
+          "name": "picture",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "picture",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "picture",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "68677017-be4e-4e85-a559-f2b9083b37bc",
+          "name": "gender",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "gender",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "gender",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "d4161bf0-dcb7-48f3-b525-0c1c7b420e84",
+          "name": "nickname",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "nickname",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "nickname",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "4de4e622-4234-440c-aa5f-2679b43e11ed",
+          "name": "family name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "lastName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "family_name",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "923daed9-ae3d-48a1-9e1e-6d9f53baf9d4",
+          "name": "updated at",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "updatedAt",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "updated_at",
+            "jsonType.label": "long"
+          }
+        },
+        {
+          "id": "113a3eb2-113e-42e1-831b-d78d7fd8b316",
+          "name": "locale",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "locale",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "locale",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a4adff09-351c-4575-83f5-8929de0e08db",
+          "name": "given name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "firstName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "given_name",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "c7d31bfc-744f-4449-b7ab-55f44e4a982d",
+          "name": "birthdate",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "birthdate",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "birthdate",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ec22db3d-f2f6-49d3-b593-c82e7c323775",
+      "name": "organization",
+      "description": "Additional claims about the organization a subject belongs to",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "${organizationScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a2cdcafc-6a6a-403e-8542-c90d7d71354a",
+          "name": "organization",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-organization-membership-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "organization",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "id": "e27c7f71-e290-4ebd-872e-f25a37d61d6d",
+      "name": "email",
+      "description": "OpenID Connect built-in scope: email",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "${emailScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "56f4902d-4e84-4e9c-8314-ec1d30274e37",
+          "name": "email verified",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "emailVerified",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "claim.name": "email_verified",
+            "jsonType.label": "boolean"
+          }
+        },
+        {
+          "id": "74f29384-2596-4e78-b5c5-85409c3ec02c",
+          "name": "email",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "email",
+            "id.token.claim": "false",
+            "access.token.claim": "false",
+            "claim.name": "email",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fbdcc11b-d2f8-4349-8498-0cfa43a7506f",
+      "name": "web-origins",
+      "description": "OpenID Connect scope for add allowed web origins to the access token",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "consent.screen.text": "",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "72c3ad28-1c1f-428e-bcef-863ccff4fbe8",
+          "name": "allowed web origins",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-allowed-origins-mapper",
+          "consentRequired": false,
+          "config": {
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "8c1e4031-694c-40ab-aab9-a97fc681f1f4",
+      "name": "role_list",
+      "description": "SAML role list",
+      "protocol": "saml",
+      "attributes": {
+        "consent.screen.text": "${samlRoleListScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a8c9439a-4fe8-4f61-816c-014b290a3e62",
+          "name": "role list",
+          "protocol": "saml",
+          "protocolMapper": "saml-role-list-mapper",
+          "consentRequired": false,
+          "config": {
+            "single": "false",
+            "attribute.nameformat": "Basic",
+            "attribute.name": "Role"
+          }
+        }
+      ]
+    },
+    {
+      "id": "6a8b43dc-0a53-4640-9840-1232a089457d",
+      "name": "roles",
+      "description": "OpenID Connect scope for add user roles to the access token",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "consent.screen.text": "${rolesScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "7c62f9cc-c092-4bb5-b193-5a2f7b7ca126",
+          "name": "audience resolve",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-resolve-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "id": "cab39168-4935-49df-97de-04741050fcd5",
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        },
+        {
+          "id": "bc60ba26-3fce-4251-967d-01fb2971b1df",
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ae432cfd-1204-405a-88cb-6f214d051a3d",
+      "name": "acr",
+      "description": "OpenID Connect scope for add acr (authentication context class reference) to the token",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "6af0e727-a182-4afc-b5a5-2f76710a2ffe",
+          "name": "acr loa level",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-acr-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "e578ead9-2cc9-4732-ae36-1d2a02fb7db0",
+      "name": "phone",
+      "description": "OpenID Connect built-in scope: phone",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "${phoneScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a7a7e629-79b7-4f33-9b03-81daa0844a9c",
+          "name": "phone number",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "phoneNumber",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "phone_number",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "cd1995c4-99bc-4a96-9bc9-d119512b02b5",
+          "name": "phone number verified",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "phoneNumberVerified",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "phone_number_verified",
+            "jsonType.label": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "id": "4b671d51-8c27-465f-a838-5d68b713a20d",
+      "name": "offline_access",
+      "description": "OpenID Connect built-in scope: offline_access",
+      "protocol": "openid-connect",
+      "attributes": {
+        "consent.screen.text": "${offlineAccessScopeConsentText}",
+        "display.on.consent.screen": "true"
+      }
+    },
+    {
+      "id": "7dc62edc-6d33-4e07-8fa3-59d05e0d4485",
+      "name": "address",
+      "description": "OpenID Connect built-in scope: address",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "${addressScopeConsentText}",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "5e6f7f4d-d30d-44b4-8b62-a07c92a4f55d",
+          "name": "address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-address-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute.formatted": "formatted",
+            "user.attribute.country": "country",
+            "introspection.token.claim": "true",
+            "user.attribute.postal_code": "postal_code",
+            "userinfo.token.claim": "true",
+            "user.attribute.street": "street",
+            "id.token.claim": "true",
+            "user.attribute.region": "region",
+            "access.token.claim": "true",
+            "user.attribute.locality": "locality"
+          }
+        }
+      ]
+    },
+    {
+      "name": "saml-kafe-profile",
+      "description": "KAFE-compatible SAML attribute bundle (eduPerson + SCHAC + org). Emits FriendlyName=camelCase, Name=REFEDS OID under URI nameformat.",
+      "protocol": "saml",
+      "attributes": {
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Release your institutional identity attributes (eduPerson, SCHAC) to this application."
+      },
+      "protocolMappers": [
+        {
+          "name": "eduPersonPrincipalName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonPrincipalName",
+            "friendly.name": "eduPersonPrincipalName",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.6"
+          }
+        },
+        {
+          "name": "eduPersonUniqueId",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonUniqueId",
+            "friendly.name": "eduPersonUniqueId",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.13"
+          }
+        },
+        {
+          "name": "eduPersonAffiliation",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonAffiliation",
+            "friendly.name": "eduPersonAffiliation",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.1",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonScopedAffiliation",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonScopedAffiliation",
+            "friendly.name": "eduPersonScopedAffiliation",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.9",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonEntitlement",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonEntitlement",
+            "friendly.name": "eduPersonEntitlement",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.7",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "eduPersonOrcid",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "eduPersonOrcid",
+            "friendly.name": "eduPersonOrcid",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.16"
+          }
+        },
+        {
+          "name": "schacHomeOrganization",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "schacHomeOrganization",
+            "friendly.name": "schacHomeOrganization",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.25178.1.2.9"
+          }
+        },
+        {
+          "name": "schacHomeOrganizationType",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "schacHomeOrganizationType",
+            "friendly.name": "schacHomeOrganizationType",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.25178.1.2.10"
+          }
+        },
+        {
+          "name": "schacPersonalUniqueCode",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "schacPersonalUniqueCode",
+            "friendly.name": "schacPersonalUniqueCode",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.25178.1.2.14",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "o",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "o",
+            "friendly.name": "o",
+            "attribute.name": "urn:oid:2.5.4.10"
+          }
+        },
+        {
+          "name": "ou",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "ou",
+            "friendly.name": "ou",
+            "attribute.name": "urn:oid:2.5.4.11"
+          }
+        },
+        {
+          "name": "isMemberOf",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "isMemberOf",
+            "friendly.name": "isMemberOf",
+            "attribute.name": "urn:oid:1.3.6.1.4.1.5923.1.5.1.1",
+            "aggregate.attrs": "true"
+          }
+        },
+        {
+          "name": "displayName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "displayName",
+            "friendly.name": "displayName",
+            "attribute.name": "urn:oid:2.16.840.1.113730.3.1.241"
+          }
+        },
+        {
+          "name": "uid",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "uid",
+            "friendly.name": "uid",
+            "attribute.name": "urn:oid:0.9.2342.19200300.100.1.1"
+          }
+        },
+        {
+          "name": "mail",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "URI Reference",
+            "user.attribute": "email",
+            "friendly.name": "mail",
+            "attribute.name": "urn:oid:0.9.2342.19200300.100.1.3"
+          }
+        }
+      ]
+    }
+  ],
+  "defaultDefaultClientScopes": [
+    "oidc-kafe-profile",
+    "saml-kafe-profile",
+    "profile",
+    "email",
+    "roles",
+    "web-origins",
+    "acr",
+    "basic",
+    "role_list",
+    "saml_organization"
+  ],
+  "defaultOptionalClientScopes": [
+    "offline_access",
+    "address",
+    "phone",
+    "microprofile-jwt",
+    "organization"
+  ],
+  "users": [
+    {
+      "username": "alice",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Alice",
+      "lastName": "Anderson",
+      "email": "alice@sandbox.ac.kr",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sandbox!Alice",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "uid": [
+          "alice"
+        ],
+        "displayName": [
+          "Alice Anderson"
+        ],
+        "eduPersonPrincipalName": [
+          "alice@sandbox.ac.kr"
+        ],
+        "eduPersonUniqueId": [
+          "alice-1a2b3c4d@sandbox.ac.kr"
+        ],
+        "eduPersonAffiliation": [
+          "member",
+          "student"
+        ],
+        "eduPersonScopedAffiliation": [
+          "member@sandbox.ac.kr",
+          "student@sandbox.ac.kr"
+        ],
+        "eduPersonEntitlement": [
+          "urn:mace:sandbox.ac.kr:entitlement:lms-user"
+        ],
+        "schacHomeOrganization": [
+          "sandbox.ac.kr"
+        ],
+        "schacHomeOrganizationType": [
+          "urn:schac:homeOrganizationType:kr:university"
+        ],
+        "schacPersonalUniqueCode": [
+          "urn:schac:personalUniqueCode:kr:sandbox.ac.kr:studentID:20260001"
+        ],
+        "o": [
+          "Sandbox University"
+        ],
+        "ou": [
+          "Department of Computer Science"
+        ],
+        "isMemberOf": [
+          "cn=cs-undergrad,ou=groups,dc=sandbox,dc=ac,dc=kr"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-sandbox"
+      ]
+    },
+    {
+      "username": "bob",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Bob",
+      "lastName": "Brown",
+      "email": "bob@sandbox.ac.kr",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sandbox!Bob",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "uid": [
+          "bob"
+        ],
+        "displayName": [
+          "Bob Brown"
+        ],
+        "eduPersonPrincipalName": [
+          "bob@sandbox.ac.kr"
+        ],
+        "eduPersonUniqueId": [
+          "bob-5e6f7a8b@sandbox.ac.kr"
+        ],
+        "eduPersonAffiliation": [
+          "member",
+          "employee",
+          "staff"
+        ],
+        "eduPersonScopedAffiliation": [
+          "member@sandbox.ac.kr",
+          "employee@sandbox.ac.kr",
+          "staff@sandbox.ac.kr"
+        ],
+        "eduPersonEntitlement": [
+          "urn:mace:sandbox.ac.kr:entitlement:admin-portal",
+          "urn:mace:dir:entitlement:common-lib-terms"
+        ],
+        "schacHomeOrganization": [
+          "sandbox.ac.kr"
+        ],
+        "schacHomeOrganizationType": [
+          "urn:schac:homeOrganizationType:kr:university"
+        ],
+        "o": [
+          "Sandbox University"
+        ],
+        "ou": [
+          "IT Services"
+        ],
+        "isMemberOf": [
+          "cn=it-staff,ou=groups,dc=sandbox,dc=ac,dc=kr"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-sandbox"
+      ]
+    },
+    {
+      "username": "carol",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Carol",
+      "lastName": "Clark",
+      "email": "carol@sandbox.ac.kr",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sandbox!Carol",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "uid": [
+          "carol"
+        ],
+        "displayName": [
+          "Prof. Carol Clark"
+        ],
+        "eduPersonPrincipalName": [
+          "carol@sandbox.ac.kr"
+        ],
+        "eduPersonUniqueId": [
+          "carol-9c0d1e2f@sandbox.ac.kr"
+        ],
+        "eduPersonAffiliation": [
+          "member",
+          "employee",
+          "faculty"
+        ],
+        "eduPersonScopedAffiliation": [
+          "member@sandbox.ac.kr",
+          "employee@sandbox.ac.kr",
+          "faculty@sandbox.ac.kr"
+        ],
+        "eduPersonEntitlement": [
+          "urn:mace:sandbox.ac.kr:entitlement:research-db"
+        ],
+        "eduPersonOrcid": [
+          "https://orcid.org/0000-0002-0000-0003"
+        ],
+        "schacHomeOrganization": [
+          "sandbox.ac.kr"
+        ],
+        "schacHomeOrganizationType": [
+          "urn:schac:homeOrganizationType:kr:university"
+        ],
+        "o": [
+          "Sandbox University"
+        ],
+        "ou": [
+          "Department of Electronic Engineering"
+        ],
+        "isMemberOf": [
+          "cn=ee-faculty,ou=groups,dc=sandbox,dc=ac,dc=kr"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-sandbox"
+      ]
+    },
+    {
+      "username": "vguest",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Victor",
+      "lastName": "Guest",
+      "email": "vguest@vho.sandbox.ac.kr",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sandbox!Vguest",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "uid": [
+          "vguest"
+        ],
+        "displayName": [
+          "Victor Guest (VHO)"
+        ],
+        "eduPersonPrincipalName": [
+          "vguest@vho.sandbox.ac.kr"
+        ],
+        "eduPersonAffiliation": [
+          "affiliate"
+        ],
+        "eduPersonScopedAffiliation": [
+          "affiliate@vho.sandbox.ac.kr"
+        ],
+        "schacHomeOrganization": [
+          "vho.sandbox.ac.kr"
+        ],
+        "schacHomeOrganizationType": [
+          "urn:schac:homeOrganizationType:int:vho"
+        ],
+        "o": [
+          "Sandbox VHO"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-sandbox"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "claim-inspector",
+      "name": "Claim Inspector",
+      "description": "Flask + authlib reference RP. Auth Code + PKCE.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "serviceAccountsEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "redirectUris": [
+        "http://otest.sandbox.ac.kr/callback",
+        "http://localhost:5000/callback"
+      ],
+      "webOrigins": [
+        "http://otest.sandbox.ac.kr",
+        "http://localhost:5000"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "300",
+        "post.logout.redirect.uris": "http://otest.sandbox.ac.kr/##http://localhost:5000/*"
+      },
+      "secret": "claim-inspector-dev-secret-change-me",
+      "defaultClientScopes": [
+        "oidc-kafe-profile",
+        "profile",
+        "email",
+        "roles",
+        "web-origins"
+      ],
+      "optionalClientScopes": [
+        "offline_access"
+      ]
+    },
+    {
+      "clientId": "outline",
+      "name": "Outline Wiki",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://owiki.sandbox.ac.kr/auth/oidc.callback"
+      ],
+      "webOrigins": [
+        "http://owiki.sandbox.ac.kr"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "",
+        "post.logout.redirect.uris": "http://owiki.sandbox.ac.kr/*"
+      },
+      "secret": "outline-dev-secret-change-me",
+      "defaultClientScopes": [
+        "oidc-kafe-profile",
+        "profile",
+        "email",
+        "roles",
+        "web-origins"
+      ],
+      "optionalClientScopes": [
+        "offline_access"
+      ]
+    },
+    {
+      "clientId": "http://stest.sandbox.ac.kr/metadata",
+      "name": "SAML Assertion Inspector (stest-app)",
+      "description": "Flask + pysaml2 reference SP. POST binding, signed AuthnRequests, persistent NameID.",
+      "enabled": true,
+      "protocol": "saml",
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "redirectUris": [
+        "http://stest.sandbox.ac.kr/*"
+      ],
+      "attributes": {
+        "saml.server.signature": "true",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml.assertion.signature": "true",
+        "saml.client.signature": "true",
+        "saml.encrypt": "false",
+        "saml.authnstatement": "true",
+        "saml.force.post.binding": "true",
+        "saml.signature.algorithm": "RSA_SHA256",
+        "saml_assertion_consumer_url_post": "http://stest.sandbox.ac.kr/acs",
+        "saml_single_logout_service_url_redirect": "http://stest.sandbox.ac.kr/slo",
+        "saml_name_id_format": "persistent",
+        "saml.signing.certificate": "MIIEBTCCAu2gAwIBAgIUGevTqv1+ENOs7KR5VZImNDEnyEswDQYJKoZIhvcNAQELBQAwgZExCzAJBgNVBAYTAktSMRAwDgYDVQQIDAdTYW5kYm94MQ4wDAYDVQQHDAVMb2NhbDEbMBkGA1UECgwSU2FuZGJveCBVbml2ZXJzaXR5MSUwIwYDVQQLDBxPSURDIFRlc3QgU2FuZGJveCAoREVWIE9OTFkpMRwwGgYDVQQDDBNzdGVzdC5zYW5kYm94LmFjLmtyMB4XDTI2MDQyMDA4MDAzMFoXDTM2MDQxNzA4MDAzMFowgZExCzAJBgNVBAYTAktSMRAwDgYDVQQIDAdTYW5kYm94MQ4wDAYDVQQHDAVMb2NhbDEbMBkGA1UECgwSU2FuZGJveCBVbml2ZXJzaXR5MSUwIwYDVQQLDBxPSURDIFRlc3QgU2FuZGJveCAoREVWIE9OTFkpMRwwGgYDVQQDDBNzdGVzdC5zYW5kYm94LmFjLmtyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNlQG7H1OjQpfS0UJNmnwEFrQDmnU72+9VcFjl+bJf0S9hyRPaQMniM47ZjmGIBBChuqoV/upyUsXLiMU1jWbYVtZc7xPBsmdN/pZ6i+denUlc8Nae1b9DoHjz2tMgb0Mu+ZPBRaFBmksNb92PFr0/Pw4pUFvNXEtO4gM+3GdWGLqmgsK55ug33bNjg0SulcdvxI6HhuPzRTI/LCwQHQXv5IhhSxz0lh4rxE5F5ao/K3/ryBmYF64OfgXVdqE/A9sbCZUh9BHX98KDXYW+W6PZxKW4+lbVtX2+fDcp8o7aWfiaVHgFYOeMrmkCfxhqBwhOF6K+stZfgpP7AlLtbykwIDAQABo1MwUTAdBgNVHQ4EFgQUaLU5DJzqL15QjVWC7QJSqZ4pyEMwHwYDVR0jBBgwFoAUaLU5DJzqL15QjVWC7QJSqZ4pyEMwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAPbsr+THF5qXWn4zEKj6pqbKqnKmp+hMbvpZcS6eizCUb7QmbOkNJAfQ55xSsmHS8hC8As5KDExNWqPELVIimy32gFi7/tOgUgT5rmUvnKLXCJlZ/otD0FtwGW6rhwgQCfq9BWJjxNj8iJttzVU9ubutIbRiTW2Gld22Y7Iy7byd181cnjSMsQYHsN7wye2vUli6y4fp+lb1XebFaNjem/NGtFAse1TCq1dh27OsnLXePHoEp8kVFVGl/FLzx+N55QgasmE0S5ttRwwrAx+di+vDviJyrvPs/Z6qfTn22tJvG1MdVpUgC3K60uTFFqcmvv8cDqIRIvvO00964j1a7/w=="
+      },
+      "defaultClientScopes": [
+        "saml-kafe-profile",
+        "role_list"
+      ],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "http://swiki.sandbox.ac.kr/shibboleth",
+      "name": "Sandbox Wiki (SAML via Shibboleth)",
+      "description": "MediaWiki + libapache2-mod-shib / shibd + Extension:Auth_remoteuser. SAML dance happens at the Apache layer; PHP only sees REMOTE_USER.",
+      "enabled": true,
+      "protocol": "saml",
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "redirectUris": [
+        "http://swiki.sandbox.ac.kr/Shibboleth.sso/*"
+      ],
+      "attributes": {
+        "saml.server.signature": "true",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml.assertion.signature": "true",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.authnstatement": "true",
+        "saml.force.post.binding": "true",
+        "saml.signature.algorithm": "RSA_SHA256",
+        "saml_assertion_consumer_url_post": "http://swiki.sandbox.ac.kr/Shibboleth.sso/SAML2/POST",
+        "saml_single_logout_service_url_redirect": "http://swiki.sandbox.ac.kr/Shibboleth.sso/SLO/Redirect",
+        "saml_single_logout_service_url_post": "http://swiki.sandbox.ac.kr/Shibboleth.sso/SLO/POST",
+        "saml_name_id_format": "persistent"
+      },
+      "defaultClientScopes": [
+        "saml-kafe-profile",
+        "role_list"
+      ],
+      "optionalClientScopes": []
+    }
+  ]
+}

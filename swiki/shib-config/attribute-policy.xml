@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Sandbox attribute filter policy — permissive. Passes every mapped
+attribute through unmolested.
+
+The Debian-packaged default policy enforces, among other things,
+`ValueMatchesShibMDScope` on `schacHomeOrganization`, which requires
+the IdP to advertise a `<shibmd:Scope>` element in its metadata.
+Keycloak doesn't emit that element, so the default policy silently
+drops schacHomeOrganization. Replacing with a permit-any rule keeps
+the full KAFE attribute set visible in swiki for parity with the
+other SPs.
+-->
+<AttributeFilterPolicyGroup
+    xmlns="urn:mace:shibboleth:2.0:afp"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <AttributeFilterPolicy>
+        <PolicyRequirementRule xsi:type="ANY"/>
+        <AttributeRule attributeID="*" permitAny="true"/>
+    </AttributeFilterPolicy>
+
+</AttributeFilterPolicyGroup>
